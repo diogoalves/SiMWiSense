@@ -30,6 +30,15 @@ You can also contact me (haque.k@northeastern.edu) regarding the dataset.**
 
 (IV) Unzip the downloaded file with ``` sudo unzip Data.zip ``` <br/>
 
+## Setup Environment
+
+There is a Conda environment description in the `environment.yml` file.  
+To create an environment named `tensorflow`, execute the following command:
+
+```bash
+conda env create -f environment.yml -n tensorflow
+```
+
 ## SiMWiSense Tests
 We captured the IEEE 802.11ac CSI pcap files with 80MHz bandwidth for **three different Tests**: <br/>
 
