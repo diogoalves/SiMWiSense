@@ -5,3 +5,12 @@ Data/*
 *.jpg
 *.JPG
 
+
+GradCam/*
+
+*.pyc
+*.pyo
+
+# Big EDA files
+EDA/SAIDAS/03-batch_summary.csv
+EDA/SAIDAS/04-csv_summary.csv
