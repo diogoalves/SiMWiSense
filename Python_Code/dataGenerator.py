@@ -166,6 +166,71 @@ class DataGenerator(keras.utils.Sequence):
             batch_label = keras.utils.to_categorical(batch_label, num_classes=self.num_classes)
         return batch_data, batch_label
 
+
+class DataGeneratorUnified(keras.utils.Sequence):
+    
+    def __init__(self, list_dataset_paths, list_dataset_csvs, NoOfSubcarrier, num_classes, chunk_shape, batchsize, shuffle=True, to_categorical=True):
+        
+        self.dataset_paths = list_dataset_paths # Lista de caminhos base para os datasets
+        self.batchsize = batchsize
+        self.num_classes = num_classes
+        self.shuffle = shuffle
+        self.NoOfSubcarrier = NoOfSubcarrier
+        self.windowsize = chunk_shape[0]
+        self.length = chunk_shape[1]
+        self.height = chunk_shape[2]
+        self.to_categorical = to_categorical
+
+        # Listas para armazenar todos os filenames e labels combinados
+        all_datalist = []
+        all_labels = []
+        self.source_indices = [] # Para mapear qual dataset cada amostra pertence
+
+        # Iterar sobre cada dataset fornecido
+        for i, (dataset_path, dataset_csv) in enumerate(zip(list_dataset_paths, list_dataset_csvs)):
+            df = pd.read_csv(dataset_csv)
+            all_datalist.extend(df["filename"].tolist())
+            all_labels.extend(df["label"].tolist())
+            # Armazena o índice da fonte para cada amostra
+            self.source_indices.extend([i] * len(df["filename"]))
+        
+        self.datalist = all_datalist
+        self.labels = all_labels
+        self.indexes = np.arange(len(self.labels))
+        self.on_epoch_end()
+        return
+
+    def __len__(self):
+        """Denote the number of batches"""
+        return int(np.floor(len(self.labels) / self.batchsize))
+
+    def __getitem__(self, idx):
+        """Generate one batch of data"""
+        indexes = self.indexes[idx*self.batchsize:(idx+1)*self.batchsize]
+        X, y = self.__load_batch(indexes)
+        return X, y
+
+    def on_epoch_end(self):
+        """Update indexes after each epoch"""
+        if self.shuffle == True:
+            np.random.shuffle(self.indexes)
+
+    def __load_batch(self, indexes):
+        """Read new batch of data """
+        batch_data = np.empty((self.batchsize, self.windowsize, self.length, self.height))
+        batch_label = np.empty(self.batchsize, dtype=int)
+        
+        for i, k in enumerate(indexes):
+            # Obtém o caminho do dataset correto para a amostra atual
+            current_dataset_path = self.dataset_paths[self.source_indices[k]]
+            batch_data[i], batch_label[i] = read_mat(current_dataset_path, self.datalist[k], self.NoOfSubcarrier)
+        
+        if self.to_categorical:
+            batch_label = keras.utils.to_categorical(batch_label, num_classes=self.num_classes)
+        return batch_data, batch_label
+
+
+
 class FewshotDataGen:
 
     def __init__(self,dataset_path,dataset_csv,chunk_shape, num_classes, NoOfSubcarrier):
