@@ -23,7 +23,7 @@ from tensorflow.keras import layers, models
 from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
 from dataGenerator import DataGenerator_Coarse, DataGenerator
-from sklearn.metrics import plot_confusion_matrix
+# from sklearn.metrics import plot_confusion_matrix
 from sklearn.metrics import confusion_matrix
 from matplotlib import pyplot as plt
 
@@ -172,7 +172,7 @@ def main():
 
 
     # Plotting Accuracy
-    plot_accuracy(history, train_dir)
+    # plot_accuracy(history, train_dir)
 
     # Evaluating Model
     print("The validation accuracy is :", history.history['val_accuracy'])
@@ -180,11 +180,11 @@ def main():
     print("The validation loss is :", history.history['val_loss'])
     print("The training loss is :", history.history['loss'])
 
-    model = load_model(model_dir)
-    final_loss, final_accuracy = model.evaluate(test_gen)
-    print('Test Loss: {}, Test Accuracy: {}'.format(final_loss, final_accuracy))
+    # model = load_model(model_dir)
+    # final_loss, final_accuracy = model.evaluate(test_gen)
+    # print('Test Loss: {}, Test Accuracy: {}'.format(final_loss, final_accuracy))
 
-    evaluate_and_plot_confusion_matrix(model, test_gen, labels, train_dir)
+    # evaluate_and_plot_confusion_matrix(model, test_gen, labels, train_dir)
 
 if __name__ == '__main__':
     main()

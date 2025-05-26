@@ -23,7 +23,7 @@ from tensorflow.keras import layers, models
 from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
 from dataGenerator import DataGenerator
-from sklearn.metrics import plot_confusion_matrix
+# from sklearn.metrics import plot_confusion_matrix
 from sklearn.metrics import confusion_matrix
 from matplotlib import pyplot as plt
 
@@ -33,14 +33,17 @@ window_size = 50
 epoch = 15
 
 
-def parse_arguments():
+def parse_arguments(args_list=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('Test', help='Testing Scenario')
     parser.add_argument('station', help='name of the station')
     parser.add_argument('Train_and_test_STA', help='directory for training data')
     parser.add_argument('model_save', help='Name of the model')
     parser.add_argument('NoOfSubcarrier', help='No Of Subcarrier')
-    args = parser.parse_args()
+    if args_list is not None:
+        args = parser.parse_args(args_list)
+    else:
+        args = parser.parse_args()
     return args
 
 def get_data_paths(args):
@@ -155,7 +158,7 @@ def main():
     model.compile(optimizer=keras.optimizers.Adam(0.01), loss="categorical_crossentropy", metrics=["accuracy"])
     history = train_model(model, train_gen, val_gen, model_dir)
 
-    plot_accuracy(history, train_dir)
+    # plot_accuracy(history, train_dir)
 
     # Evaluating Model
     print("The validation accuracy is :", history.history['val_accuracy'])
@@ -168,7 +171,7 @@ def main():
     final_loss, final_accuracy = model.evaluate(test_gen)
     print('Test Loss: {}, Test Accuracy: {}'.format(final_loss, final_accuracy))
 
-    evaluate_and_plot_confusion_matrix(model, test_gen, labels, train_dir)
+    # evaluate_and_plot_confusion_matrix(model, test_gen, labels, train_dir)
 
 if __name__ == '__main__':
     main()
