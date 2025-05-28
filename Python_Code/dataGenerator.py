@@ -169,7 +169,7 @@ class DataGenerator(keras.utils.Sequence):
 
 class DataGeneratorUnified(keras.utils.Sequence):
     
-    def __init__(self, list_dataset_paths, list_dataset_csvs, NoOfSubcarrier, num_classes, chunk_shape, batchsize, shuffle=True, to_categorical=True):
+    def __init__(self, list_dataset_paths, list_dataset_csvs, NoOfSubcarrier, num_classes, chunk_shape, batchsize, shuffle=True, to_categorical=True, filter_labels=None):
         
         self.dataset_paths = list_dataset_paths # Lista de caminhos base para os datasets
         self.batchsize = batchsize
@@ -180,6 +180,7 @@ class DataGeneratorUnified(keras.utils.Sequence):
         self.length = chunk_shape[1]
         self.height = chunk_shape[2]
         self.to_categorical = to_categorical
+        self.filter_labels = filter_labels 
 
         # Listas para armazenar todos os filenames e labels combinados
         all_datalist = []
@@ -189,6 +190,10 @@ class DataGeneratorUnified(keras.utils.Sequence):
         # Iterar sobre cada dataset fornecido
         for i, (dataset_path, dataset_csv) in enumerate(zip(list_dataset_paths, list_dataset_csvs)):
             df = pd.read_csv(dataset_csv)
+
+            if self.filter_labels is not None:
+                df = df[df["label"].isin(self.filter_labels)]
+                
             all_datalist.extend(df["filename"].tolist())
             all_labels.extend(df["label"].tolist())
             # Armazena o índice da fonte para cada amostra
