@@ -1,0 +1,7 @@
+Experiment: Compare fine-grained models trained on single monitor and environment vs multiple monitors and environments. Using GradCAM, SHAP and Embeddings. Office version
+
+fine_grained_trainedon_Office_m1_242.h5_accuracy: 0.9780950835631997
+fine_grained_trainedon_Office_m1_242.h5_f1score: 0.9871631216833575
+fine_grained_trainedon_ClassroomOffice_m1m2m3_242-fixed.h5_accuracy: 0.9944832062307318
+fine_grained_trainedon_ClassroomOffice_m1m2m3_242-fixed.h5_f1score: 0.9965815739840798
+elapsed_time_seconds: 23912.9979596138
