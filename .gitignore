@@ -14,3 +14,11 @@ GradCam/*
 # Big EDA files
 EDA/SAIDAS/03-batch_summary.csv
 EDA/SAIDAS/04-csv_summary.csv
+
+
+# Big .npz files
+./CompareFineGrainedModelsSingleVsMultipleWithSHAPOffice/fine_grained_trainedon_ClassroomOffice_m1m2m3_242-fixed.h5_gradcam_and_embeddings.npz
+./CompareFineGrainedModelsSingleVsMultipleWithSHAPOffice/fine_grained_trainedon_Office_m1_242.h5_gradcam_and_embeddings.npz
+./CompareFineGrainedModelsSingleVsMultiple/fine_grained_trainedon_Classroom_m1_242.h5_gradcam_and_embeddings.npz
+./CompareFineGrainedModelsSingleVsMultipleWithSHAP/fine_grained_trainedon_ClassroomOffice_m1m2m3_242-fixed.h5_gradcam_and_embeddings.npz
+./CompareFineGrainedModelsSingleVsMultipleWithSHAP/fine_grained_trainedon_Classroom_m1_242.h5_gradcam_and_embeddings.npz
