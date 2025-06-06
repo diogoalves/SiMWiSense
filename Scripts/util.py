@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
-
+from sklearn.utils import shuffle
 
 def make_gradcam_heatmap(x_one_sample, model, npy_file, png_file):
   # We get the output of the last convolution layer. We then create a model that goes up to only that layer.
@@ -119,3 +119,44 @@ def batch_make_gradcam_heatmap(X, model):
   heatmaps /= tf.reduce_max(heatmaps, axis=(1, 2), keepdims=True) + 1e-8
 
   return heatmaps, top_pred_index, top_class_channel
+
+
+
+
+def amostragem_estratificada_indices(labels, n_amostras=20, random_state=42):
+    """
+    Retorna índices estratificados de acordo com a distribuição das labels.
+
+    Parâmetros:
+    - labels: array-like (lista ou np.array) com os rótulos das amostras
+    - n_amostras: número total de amostras a serem selecionadas
+    - random_state: semente para reprodução dos resultados
+
+    Retorna:
+    - lista de índices estratificados (shuffle final incluso)
+    """
+    labels = np.array(labels)
+    unique_classes, counts = np.unique(labels, return_counts=True)
+    proportions = counts / counts.sum()
+
+    # Quantidade de amostras por classe (inteiro)
+    per_class_counts = (proportions * n_amostras).astype(int)
+
+    # Corrige se a soma não der exatamente n_amostras
+    while per_class_counts.sum() < n_amostras:
+        remainder = (proportions * n_amostras) - per_class_counts
+        idx = np.argmax(remainder)
+        per_class_counts[idx] += 1
+
+    # Seleciona os índices estratificados
+    indices = []
+    rng = np.random.default_rng(random_state)
+    for cls, n in zip(unique_classes, per_class_counts):
+        cls_indices = np.where(labels == cls)[0]
+        selected = rng.choice(cls_indices, size=n, replace=False)
+        indices.extend(selected)
+
+    # Embaralha o resultado final
+    indices = shuffle(indices, random_state=random_state)
+
+    return indices

@@ -1,7 +1,5 @@
 Experiment: Compare fine-grained models trained on single monitor and environment vs multiple monitors and environments
 
-fine_grained_trainedon_Classroom_m1_242.h5_accuracy: 0.9822112136906103
-fine_grained_trainedon_Classroom_m1_242.h5_f1score: 0.9908211164647773
 fine_grained_trainedon_ClassroomOffice_m1m2m3_242-fixed.h5_accuracy: 0.9781580725061922
 fine_grained_trainedon_ClassroomOffice_m1m2m3_242-fixed.h5_f1score: 0.9886730697908104
-elapsed_time_seconds: 62.9208607673645
+elapsed_time_seconds: 42.97003197669983
